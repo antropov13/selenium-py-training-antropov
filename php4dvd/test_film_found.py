@@ -37,14 +37,6 @@ class Untitled2(unittest.TestCase):
         movies_to = driver.find_elements_by_css_selector("#results > a > div.movie_box > div.title")
         assert len(movies_to)>0
 
-        #Поиск, когда ничего не найдено
-        driver.find_element_by_id("q").click()
-        driver.find_element_by_id("q").clear()
-        driver.find_element_by_id("q").send_keys("Фильм, которого нет")
-        driver.find_element_by_id("q").send_keys(Keys.RETURN)
-
-        assert driver.find_element_by_css_selector("#results > div.content").text == "No movies where found."
-
         #Поиск, когда что-то найдено
         driver.find_element_by_id("q").click()
         driver.find_element_by_id("q").clear()

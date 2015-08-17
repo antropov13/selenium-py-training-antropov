@@ -38,13 +38,20 @@ class Untitled2(unittest.TestCase):
         assert len(movies_to)>0
 
         #Поиск, когда что-то найдено
+        search_movie = "Мстители"
         driver.find_element_by_id("q").click()
         driver.find_element_by_id("q").clear()
-        driver.find_element_by_id("q").send_keys("Мстители")
+        driver.find_element_by_id("q").send_keys(search_movie)
         driver.find_element_by_id("q").send_keys(Keys.RETURN)
-
+        time.sleep(1)
         movies_filter = driver.find_elements_by_css_selector("#results > a > div.movie_box > div.title")
         assert len(movies_filter)>0
+        for movie in movies_filter:
+            film = movie.text
+            if film.find(search_movie) > (-1):
+                pass
+            else:
+                self.fail("search movie: "+film)
 
         driver.find_element_by_css_selector("nav > ul > li:nth-child(4) > a").click()
         driver._switch_to.alert.accept()

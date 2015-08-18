@@ -15,6 +15,16 @@ def is_find_element(self,by,locator):
     except WebDriverException:
         self.fail("time out: "+locator)
 
+def is_url_page(self,url1):
+    for i in range(100):
+        try:
+            url_current = self.driver.current_url
+            if url1 != url_current:
+                return True
+        except: pass
+    else:
+        self.fail("time out")
+
 class Untitled2(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
@@ -38,14 +48,17 @@ class Untitled2(unittest.TestCase):
         assert len(movies_to)>0
 
         #Поиск, когда что-то найдено
+        url_page = driver.current_url
         search_movie = "Мстители"
         driver.find_element_by_id("q").click()
         driver.find_element_by_id("q").clear()
         driver.find_element_by_id("q").send_keys(search_movie)
         driver.find_element_by_id("q").send_keys(Keys.RETURN)
-        time.sleep(1)
+
+        is_url_page(self,url_page)
+
         movies_filter = driver.find_elements_by_css_selector("#results > a > div.movie_box > div.title")
-        assert len(movies_filter)>0
+        assert len(movies_filter)<=len(movies_to)
         for movie in movies_filter:
             film = movie.text
             if film.find(search_movie) > (-1):

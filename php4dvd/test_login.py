@@ -1,27 +1,14 @@
-# -*- coding: utf-8 -*-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
-import sys
-import unittest, time, re
+from model.user import User
+#from selenium_fixture import app
 
-class Untitled2(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Firefox()
-        self.driver.implicitly_wait(30)
-        self.base_url = "http://localhost"
-        self.verificationErrors = []
-        self.accept_next_alert = True
 
-    def test_untitled2(self):
-        driver = self.driver
-        driver.get(self.base_url + "/php4dvd/")
-        driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("admin")
-        driver.find_element_by_name("password").clear()
-        driver.find_element_by_name("password").send_keys("admin")
-        driver.find_element_by_name("submit").click()
+def test_login_with_invalid_credentials(app):
+    app.ensure_logout()
+    app.login(User.random())
+    assert app.is_not_logged_in()
 
-if __name__ == "__main__":
-    unittest.main()
+
+def test_login_with_valid_credentials(app):
+    app.ensure_logout()
+    app.login(User.Admin())
+    assert app.is_logged_in()
